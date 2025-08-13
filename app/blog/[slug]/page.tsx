@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation"
 import { fetchPostBySlug } from "@/lib/db-posts"
 import { mdxToHtml } from "@/lib/mdx"
+import Comments from "@/components/comments"
+import AdSlot from "@/components/ads/ad-slot"
 
 export const dynamic = "force-dynamic"
 
@@ -27,6 +29,14 @@ export default async function BlogPost({ params }: Props) {
         {new Date(post.published_at ?? post.created_at).toISOString().slice(0, 10)}
       </time>
       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+
+      {/* AdSense Ad Slot */}
+      {process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_BOTTOM && (
+        <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_BOTTOM} />
+      )}
+
+      {/* Comments */}
+      <Comments />
     </article>
   )
 }
